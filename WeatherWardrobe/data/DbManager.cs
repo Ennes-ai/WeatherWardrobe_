@@ -1,6 +1,4 @@
-﻿using System;
-using Microsoft.Data.SqlClient;
-using System.Windows.Forms;
+﻿using Microsoft.Data.SqlClient;
 using System.Data; // <-- BU YENİ EKLENDİ (DataTable için gerekli)
 
 namespace WeatherWardrobe.Data

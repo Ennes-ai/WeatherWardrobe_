@@ -11,7 +11,7 @@ namespace WeatherWardrobe
         private void Form1_Load(object sender, EventArgs e)
         {
             // Veritabaný yöneticimizi çaðýrýyoruz
-            
+
 
             // ComboBox'ýn veri kaynaðýný, SQL'den gelen tabloya eþitliyoruz
             comboBox1.DataSource = db.KategorileriGetir();
