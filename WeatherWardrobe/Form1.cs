@@ -2,6 +2,7 @@ namespace WeatherWardrobe
 {
     public partial class Form1 : Form
     {
+        Data.DbManager db = new Data.DbManager();
         public Form1()
         {
             InitializeComponent();
@@ -10,7 +11,7 @@ namespace WeatherWardrobe
         private void Form1_Load(object sender, EventArgs e)
         {
             // Veritabaný yöneticimizi çaðýrýyoruz
-            Data.DbManager db = new Data.DbManager();
+            
 
             // ComboBox'ýn veri kaynaðýný, SQL'den gelen tabloya eþitliyoruz
             comboBox1.DataSource = db.KategorileriGetir();
@@ -20,6 +21,11 @@ namespace WeatherWardrobe
 
             // Arka planda bizim kodda kullanacaðýmýz ID deðeri (Örn: 1)
             comboBox1.ValueMember = "ID";
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            db.BaglantiyiTestEt();
         }
     }
 }
