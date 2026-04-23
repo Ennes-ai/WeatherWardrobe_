@@ -49,23 +49,28 @@
             // dgvKıyagetler
             // 
             dgvKıyagetler.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvKıyagetler.Location = new Point(12, 48);
+            dgvKıyagetler.Location = new Point(14, 64);
+            dgvKıyagetler.Margin = new Padding(3, 4, 3, 4);
             dgvKıyagetler.Name = "dgvKıyagetler";
-            dgvKıyagetler.Size = new Size(240, 150);
+            dgvKıyagetler.RowHeadersWidth = 51;
+            dgvKıyagetler.Size = new Size(274, 200);
             dgvKıyagetler.TabIndex = 0;
+            dgvKıyagetler.CellContentClick += dgvKıyagetler_CellContentClick;
             // 
             // numericHava
             // 
-            numericHava.Location = new Point(624, 36);
+            numericHava.Location = new Point(713, 48);
+            numericHava.Margin = new Padding(3, 4, 3, 4);
             numericHava.Name = "numericHava";
-            numericHava.Size = new Size(120, 23);
+            numericHava.Size = new Size(137, 27);
             numericHava.TabIndex = 1;
             // 
             // ButtonÖneriGetir
             // 
-            ButtonÖneriGetir.Location = new Point(638, 323);
+            ButtonÖneriGetir.Location = new Point(729, 431);
+            ButtonÖneriGetir.Margin = new Padding(3, 4, 3, 4);
             ButtonÖneriGetir.Name = "ButtonÖneriGetir";
-            ButtonÖneriGetir.Size = new Size(91, 30);
+            ButtonÖneriGetir.Size = new Size(104, 40);
             ButtonÖneriGetir.TabIndex = 2;
             ButtonÖneriGetir.Text = "Ne Giysem?";
             ButtonÖneriGetir.UseVisualStyleBackColor = true;
@@ -74,17 +79,18 @@
             // LabelHavaGirdisi
             // 
             LabelHavaGirdisi.AutoSize = true;
-            LabelHavaGirdisi.Location = new Point(530, 38);
+            LabelHavaGirdisi.Location = new Point(606, 51);
             LabelHavaGirdisi.Name = "LabelHavaGirdisi";
-            LabelHavaGirdisi.Size = new Size(88, 15);
+            LabelHavaGirdisi.Size = new Size(111, 20);
             LabelHavaGirdisi.TabIndex = 3;
             LabelHavaGirdisi.Text = "Hava sıcaklığı : ";
             // 
             // ButtonYeniKıyafet
             // 
-            ButtonYeniKıyafet.Location = new Point(624, 359);
+            ButtonYeniKıyafet.Location = new Point(713, 479);
+            ButtonYeniKıyafet.Margin = new Padding(3, 4, 3, 4);
             ButtonYeniKıyafet.Name = "ButtonYeniKıyafet";
-            ButtonYeniKıyafet.Size = new Size(105, 35);
+            ButtonYeniKıyafet.Size = new Size(120, 47);
             ButtonYeniKıyafet.TabIndex = 4;
             ButtonYeniKıyafet.Text = "Yeni Kıyafet Ekle";
             ButtonYeniKıyafet.UseVisualStyleBackColor = true;
@@ -93,10 +99,12 @@
             // dgvKombin
             // 
             dgvKombin.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvKombin.Location = new Point(12, 257);
+            dgvKombin.Location = new Point(14, 343);
+            dgvKombin.Margin = new Padding(3, 4, 3, 4);
             dgvKombin.Name = "dgvKombin";
+            dgvKombin.RowHeadersWidth = 51;
             dgvKombin.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvKombin.Size = new Size(240, 150);
+            dgvKombin.Size = new Size(274, 200);
             dgvKombin.TabIndex = 5;
             dgvKombin.CellContentClick += dgvKombin_CellContentClick;
             dgvKombin.SelectionChanged += dgvKombin_SelectionChanged;
@@ -104,52 +112,55 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(107, 14);
+            label1.Location = new Point(122, 19);
             label1.Name = "label1";
-            label1.Size = new Size(50, 15);
+            label1.Size = new Size(64, 20);
             label1.TabIndex = 6;
             label1.Text = "Gardrop";
             // 
             // Kombin
             // 
             Kombin.AutoSize = true;
-            Kombin.Location = new Point(107, 217);
+            Kombin.Location = new Point(122, 289);
             Kombin.Name = "Kombin";
-            Kombin.Size = new Size(49, 15);
+            Kombin.Size = new Size(61, 20);
             Kombin.TabIndex = 7;
             Kombin.Text = "Kombin";
             // 
             // PicÖnİzleme
             // 
-            PicÖnİzleme.Location = new Point(354, 48);
+            PicÖnİzleme.Location = new Point(405, 64);
+            PicÖnİzleme.Margin = new Padding(3, 4, 3, 4);
             PicÖnİzleme.Name = "PicÖnİzleme";
-            PicÖnİzleme.Size = new Size(123, 94);
+            PicÖnİzleme.Size = new Size(141, 125);
             PicÖnİzleme.SizeMode = PictureBoxSizeMode.Zoom;
             PicÖnİzleme.TabIndex = 8;
             PicÖnİzleme.TabStop = false;
             // 
             // txtŞehir
             // 
-            txtŞehir.Location = new Point(629, 88);
+            txtŞehir.Location = new Point(719, 117);
+            txtŞehir.Margin = new Padding(3, 4, 3, 4);
             txtŞehir.Name = "txtŞehir";
             txtŞehir.PlaceholderText = "Şehir Giriniz...";
-            txtŞehir.Size = new Size(115, 23);
+            txtŞehir.Size = new Size(131, 27);
             txtŞehir.TabIndex = 9;
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(545, 91);
+            label2.Location = new Point(623, 121);
             label2.Name = "label2";
-            label2.Size = new Size(78, 15);
+            label2.Size = new Size(99, 20);
             label2.TabIndex = 10;
             label2.Text = "Şehir Giriniz : ";
             // 
             // button1
             // 
-            button1.Location = new Point(629, 155);
+            button1.Location = new Point(719, 207);
+            button1.Margin = new Padding(3, 4, 3, 4);
             button1.Name = "button1";
-            button1.Size = new Size(91, 23);
+            button1.Size = new Size(104, 31);
             button1.TabIndex = 11;
             button1.Text = "Hava Durumu";
             button1.UseVisualStyleBackColor = true;
@@ -157,9 +168,9 @@
             // 
             // FormDashboard
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(914, 600);
             Controls.Add(button1);
             Controls.Add(label2);
             Controls.Add(txtŞehir);
@@ -172,6 +183,7 @@
             Controls.Add(ButtonÖneriGetir);
             Controls.Add(numericHava);
             Controls.Add(dgvKıyagetler);
+            Margin = new Padding(3, 4, 3, 4);
             Name = "FormDashboard";
             Text = "FormDashboard";
             Load += FormDashboard_Load;
