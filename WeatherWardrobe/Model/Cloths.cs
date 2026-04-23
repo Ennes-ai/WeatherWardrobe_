@@ -1,6 +1,6 @@
 ﻿namespace WeatherWardrobe.Model
 {
-    class Cloths
+    public class Cloths
     {
         public string Name { get; set; }
         public string Category { get; set; }
