@@ -2,7 +2,7 @@ namespace WeatherWardrobe
 {
     public partial class Form1 : Form
     {
-        Data.DbManager db = new Data.DbManager();
+        data.DbManager db = new data.DbManager();
         public Form1()
         {
             InitializeComponent();
