@@ -34,6 +34,7 @@
             TextKullanıcıAdi = new TextBox();
             TextŞifre = new TextBox();
             label3 = new Label();
+            ButtonKayıtOl = new Button();
             SuspendLayout();
             // 
             // label1
@@ -91,11 +92,21 @@
             label3.TabIndex = 5;
             label3.Text = "GİRİŞ YAP";
             // 
+            // ButtonKayıtOl
+            // 
+            ButtonKayıtOl.Location = new Point(318, 351);
+            ButtonKayıtOl.Name = "ButtonKayıtOl";
+            ButtonKayıtOl.Size = new Size(75, 23);
+            ButtonKayıtOl.TabIndex = 6;
+            ButtonKayıtOl.Text = "KAYIT OL";
+            ButtonKayıtOl.UseVisualStyleBackColor = true;
+            // 
             // FormLogin
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(ButtonKayıtOl);
             Controls.Add(label3);
             Controls.Add(TextŞifre);
             Controls.Add(TextKullanıcıAdi);
@@ -116,5 +127,6 @@
         private TextBox TextKullanıcıAdi;
         private TextBox TextŞifre;
         private Label label3;
+        private Button ButtonKayıtOl;
     }
 }

@@ -39,15 +39,18 @@
             label5 = new Label();
             KaydetButton = new Button();
             KapatButton = new Button();
+            PicKiyafet = new PictureBox();
+            buttonResimSeç = new Button();
             ((System.ComponentModel.ISupportInitialize)numericMinSıcak).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericMaksSıcak).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)PicKiyafet).BeginInit();
             SuspendLayout();
             // 
             // textKıyafet
             // 
             textKıyafet.Location = new Point(110, 141);
             textKıyafet.Name = "textKıyafet";
-            textKıyafet.Size = new Size(114, 23);
+            textKıyafet.Size = new Size(138, 23);
             textKıyafet.TabIndex = 0;
             // 
             // LabelKıyafet
@@ -63,7 +66,7 @@
             // comboKategori
             // 
             comboKategori.FormattingEnabled = true;
-            comboKategori.Location = new Point(374, 141);
+            comboKategori.Location = new Point(110, 185);
             comboKategori.Name = "comboKategori";
             comboKategori.Size = new Size(138, 24);
             comboKategori.TabIndex = 2;
@@ -71,7 +74,7 @@
             // LabelKategori
             // 
             LabelKategori.AutoSize = true;
-            LabelKategori.Location = new Point(298, 146);
+            LabelKategori.Location = new Point(37, 188);
             LabelKategori.Name = "LabelKategori";
             LabelKategori.Size = new Size(67, 16);
             LabelKategori.TabIndex = 3;
@@ -79,14 +82,15 @@
             // 
             // numericMinSıcak
             // 
-            numericMinSıcak.Location = new Point(149, 300);
+            numericMinSıcak.Location = new Point(155, 300);
             numericMinSıcak.Name = "numericMinSıcak";
             numericMinSıcak.Size = new Size(137, 23);
             numericMinSıcak.TabIndex = 4;
+            numericMinSıcak.ValueChanged += numericMinSıcak_ValueChanged;
             // 
             // numericMaksSıcak
             // 
-            numericMaksSıcak.Location = new Point(457, 300);
+            numericMaksSıcak.Location = new Point(155, 349);
             numericMaksSıcak.Name = "numericMaksSıcak";
             numericMaksSıcak.Size = new Size(137, 23);
             numericMaksSıcak.TabIndex = 5;
@@ -103,7 +107,7 @@
             // labelMakSıcak
             // 
             labelMakSıcak.AutoSize = true;
-            labelMakSıcak.Location = new Point(320, 302);
+            labelMakSıcak.Location = new Point(18, 351);
             labelMakSıcak.Name = "labelMakSıcak";
             labelMakSıcak.Size = new Size(133, 16);
             labelMakSıcak.TabIndex = 7;
@@ -142,11 +146,32 @@
             KapatButton.UseVisualStyleBackColor = true;
             KapatButton.Click += KapatButton_Click;
             // 
+            // PicKiyafet
+            // 
+            PicKiyafet.Location = new Point(706, 23);
+            PicKiyafet.Name = "PicKiyafet";
+            PicKiyafet.Size = new Size(182, 141);
+            PicKiyafet.SizeMode = PictureBoxSizeMode.Zoom;
+            PicKiyafet.TabIndex = 11;
+            PicKiyafet.TabStop = false;
+            // 
+            // buttonResimSeç
+            // 
+            buttonResimSeç.Location = new Point(750, 221);
+            buttonResimSeç.Name = "buttonResimSeç";
+            buttonResimSeç.Size = new Size(75, 23);
+            buttonResimSeç.TabIndex = 12;
+            buttonResimSeç.Text = "ResimSeç";
+            buttonResimSeç.UseVisualStyleBackColor = true;
+            buttonResimSeç.Click += buttonResimSeç_Click;
+            // 
             // FormAddCloth
             // 
             AutoScaleDimensions = new SizeF(8F, 16F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(914, 480);
+            Controls.Add(buttonResimSeç);
+            Controls.Add(PicKiyafet);
             Controls.Add(KapatButton);
             Controls.Add(KaydetButton);
             Controls.Add(label5);
@@ -163,6 +188,7 @@
             Text = "FormAddCloth";
             ((System.ComponentModel.ISupportInitialize)numericMinSıcak).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericMaksSıcak).EndInit();
+            ((System.ComponentModel.ISupportInitialize)PicKiyafet).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -180,5 +206,15 @@
         private Label label5;
         private Button KaydetButton;
         private Button KapatButton;
+    
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+        }
+        private void label5_Click(object sender, EventArgs e)
+        {
+        }
+        private PictureBox PicKiyafet;
+        private Button buttonResimSeç;
     }
 }

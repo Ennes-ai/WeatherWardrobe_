@@ -1,4 +1,5 @@
-﻿using WeatherWardrobe.Model;
+﻿using WeatherWardrobe.data;
+using WeatherWardrobe.Model;
 
 namespace WeatherWardrobe
 {
@@ -8,7 +9,8 @@ namespace WeatherWardrobe
         private string kategori;
         private int maksSıcaklık;
         private int minSıcaklık;
-        private List<Cloths> gardırop = new List<Cloths>();
+        //private List<Cloths> gardırop = new List<Cloths>(); // global gardırop var artık
+        private string seçilenResimYolu;
 
         public FormAddCloth()
         {
@@ -19,19 +21,8 @@ namespace WeatherWardrobe
             comboKategori.Items.Add("Alt Giyim");
             comboKategori.Items.Add("Dış Giyim");
             comboKategori.Items.Add("Ayakkabı");
-            comboKategori.SelectedIndex = -1; // Hiçbir kategori seçili değil
+            comboKategori.SelectedIndex = 0; // Hiçbir kategori seçili değil
         }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label5_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void KaydetButton_Click(object sender, EventArgs e)
         {
             kıyafetAdı = textKıyafet.Text;
@@ -42,8 +33,7 @@ namespace WeatherWardrobe
             if (Check())
             {
                 // Veritabanına kaydetme işlemi burada yapılacak
-                MessageBox.Show("Kıyafet başarıyla kaydedildi!", "Başarılı", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                if (gardırop != null)
+                if (GlobalBrain.gardirop != null)
                 {
                     GeciciKaydet();
                 }
@@ -78,10 +68,11 @@ namespace WeatherWardrobe
                 Name = kıyafetAdı,
                 Category = kategori,
                 MinTemp = minSıcaklık,
-                MaxTemp = maksSıcaklık
+                MaxTemp = maksSıcaklık,
+                ImagePath = seçilenResimYolu,
             };
-            gardırop.Add(yeniKıyafet);
-            MessageBox.Show($"{yeniKıyafet.Name} başarıyla listeye eklendi. Toplam kıyafet sayısı: {gardırop.Count}");
+            GlobalBrain.gardirop.Add(yeniKıyafet);
+            MessageBox.Show($"{yeniKıyafet.Name} başarıyla listeye eklendi. Toplam kıyafet sayısı: {GlobalBrain.gardirop.Count}");
             return true;
         }
 
@@ -90,8 +81,22 @@ namespace WeatherWardrobe
             Application.Exit();
         }
 
-        private void FormAddCloth_Load(object sender, EventArgs e)
+        private void numericMinSıcak_ValueChanged(object sender, EventArgs e)
         {
+
+        }
+
+        private void buttonResimSeç_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Title = "Kıyafet Resmi Seç";
+            openFileDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp";
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                seçilenResimYolu = openFileDialog.FileName;
+                PicKiyafet.ImageLocation = seçilenResimYolu;
+            }
 
         }
     }

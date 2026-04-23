@@ -31,28 +31,39 @@
             dgvKıyagetler = new DataGridView();
             numericHava = new NumericUpDown();
             ButtonÖneriGetir = new Button();
+            LabelHavaGirdisi = new Label();
+            ButtonYeniKıyafet = new Button();
+            dgvKombin = new DataGridView();
+            label1 = new Label();
+            Kombin = new Label();
+            PicÖnİzleme = new PictureBox();
+            txtŞehir = new TextBox();
+            label2 = new Label();
+            button1 = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvKıyagetler).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericHava).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvKombin).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)PicÖnİzleme).BeginInit();
             SuspendLayout();
             // 
             // dgvKıyagetler
             // 
             dgvKıyagetler.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvKıyagetler.Location = new Point(12, 140);
+            dgvKıyagetler.Location = new Point(12, 48);
             dgvKıyagetler.Name = "dgvKıyagetler";
             dgvKıyagetler.Size = new Size(240, 150);
             dgvKıyagetler.TabIndex = 0;
             // 
             // numericHava
             // 
-            numericHava.Location = new Point(512, 145);
+            numericHava.Location = new Point(624, 36);
             numericHava.Name = "numericHava";
             numericHava.Size = new Size(120, 23);
             numericHava.TabIndex = 1;
             // 
             // ButtonÖneriGetir
             // 
-            ButtonÖneriGetir.Location = new Point(512, 260);
+            ButtonÖneriGetir.Location = new Point(638, 323);
             ButtonÖneriGetir.Name = "ButtonÖneriGetir";
             ButtonÖneriGetir.Size = new Size(91, 30);
             ButtonÖneriGetir.TabIndex = 2;
@@ -60,11 +71,104 @@
             ButtonÖneriGetir.UseVisualStyleBackColor = true;
             ButtonÖneriGetir.Click += ButtonÖneriGetir_Click;
             // 
+            // LabelHavaGirdisi
+            // 
+            LabelHavaGirdisi.AutoSize = true;
+            LabelHavaGirdisi.Location = new Point(530, 38);
+            LabelHavaGirdisi.Name = "LabelHavaGirdisi";
+            LabelHavaGirdisi.Size = new Size(88, 15);
+            LabelHavaGirdisi.TabIndex = 3;
+            LabelHavaGirdisi.Text = "Hava sıcaklığı : ";
+            // 
+            // ButtonYeniKıyafet
+            // 
+            ButtonYeniKıyafet.Location = new Point(624, 359);
+            ButtonYeniKıyafet.Name = "ButtonYeniKıyafet";
+            ButtonYeniKıyafet.Size = new Size(105, 35);
+            ButtonYeniKıyafet.TabIndex = 4;
+            ButtonYeniKıyafet.Text = "Yeni Kıyafet Ekle";
+            ButtonYeniKıyafet.UseVisualStyleBackColor = true;
+            ButtonYeniKıyafet.Click += button1_Click;
+            // 
+            // dgvKombin
+            // 
+            dgvKombin.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvKombin.Location = new Point(12, 257);
+            dgvKombin.Name = "dgvKombin";
+            dgvKombin.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvKombin.Size = new Size(240, 150);
+            dgvKombin.TabIndex = 5;
+            dgvKombin.CellContentClick += dgvKombin_CellContentClick;
+            dgvKombin.SelectionChanged += dgvKombin_SelectionChanged;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(107, 14);
+            label1.Name = "label1";
+            label1.Size = new Size(50, 15);
+            label1.TabIndex = 6;
+            label1.Text = "Gardrop";
+            // 
+            // Kombin
+            // 
+            Kombin.AutoSize = true;
+            Kombin.Location = new Point(107, 217);
+            Kombin.Name = "Kombin";
+            Kombin.Size = new Size(49, 15);
+            Kombin.TabIndex = 7;
+            Kombin.Text = "Kombin";
+            // 
+            // PicÖnİzleme
+            // 
+            PicÖnİzleme.Location = new Point(354, 48);
+            PicÖnİzleme.Name = "PicÖnİzleme";
+            PicÖnİzleme.Size = new Size(123, 94);
+            PicÖnİzleme.SizeMode = PictureBoxSizeMode.Zoom;
+            PicÖnİzleme.TabIndex = 8;
+            PicÖnİzleme.TabStop = false;
+            // 
+            // txtŞehir
+            // 
+            txtŞehir.Location = new Point(629, 88);
+            txtŞehir.Name = "txtŞehir";
+            txtŞehir.PlaceholderText = "Şehir Giriniz...";
+            txtŞehir.Size = new Size(115, 23);
+            txtŞehir.TabIndex = 9;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(545, 91);
+            label2.Name = "label2";
+            label2.Size = new Size(78, 15);
+            label2.TabIndex = 10;
+            label2.Text = "Şehir Giriniz : ";
+            // 
+            // button1
+            // 
+            button1.Location = new Point(629, 155);
+            button1.Name = "button1";
+            button1.Size = new Size(91, 23);
+            button1.TabIndex = 11;
+            button1.Text = "Hava Durumu";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click_1;
+            // 
             // FormDashboard
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(button1);
+            Controls.Add(label2);
+            Controls.Add(txtŞehir);
+            Controls.Add(PicÖnİzleme);
+            Controls.Add(Kombin);
+            Controls.Add(label1);
+            Controls.Add(dgvKombin);
+            Controls.Add(ButtonYeniKıyafet);
+            Controls.Add(LabelHavaGirdisi);
             Controls.Add(ButtonÖneriGetir);
             Controls.Add(numericHava);
             Controls.Add(dgvKıyagetler);
@@ -73,7 +177,10 @@
             Load += FormDashboard_Load;
             ((System.ComponentModel.ISupportInitialize)dgvKıyagetler).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericHava).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvKombin).EndInit();
+            ((System.ComponentModel.ISupportInitialize)PicÖnİzleme).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -81,5 +188,14 @@
         private DataGridView dgvKıyagetler;
         private NumericUpDown numericHava;
         private Button ButtonÖneriGetir;
+        private Label LabelHavaGirdisi;
+        private Button ButtonYeniKıyafet;
+        private DataGridView dgvKombin;
+        private Label label1;
+        private Label Kombin;
+        private PictureBox PicÖnİzleme;
+        private TextBox txtŞehir;
+        private Label label2;
+        private Button button1;
     }
 }

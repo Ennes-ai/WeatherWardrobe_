@@ -18,8 +18,8 @@
             // Gecici olarak bu şekilde!!
             if (GelenKullanıcıAdı == username && GelenSifre == sifre.ToString())
             {
-                FormAddCloth formAddCloth = new FormAddCloth();
-                formAddCloth.Show();
+                FormDashboard formDashboard = new FormDashboard();
+                formDashboard.Show();
                 this.Hide();
             }
             else
