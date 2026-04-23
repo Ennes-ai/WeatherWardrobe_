@@ -23,9 +23,17 @@ namespace WeatherWardrobe
         // 2. Form açıldığında çalışacak kod (Vitrin doluyor)
         private void FormDashboard_Load(object sender, EventArgs e)
         {
-            List<Cloths> Kıyafetlerim = GlobalBrain.gardirop.ToList();
-            dgvKıyagetler.DataSource = null;
-            dgvKıyagetler.DataSource = Kıyafetlerim;
+            // Formun en üstüne giriş yapan kişinin adını yazalım, şık dursun
+            this.Text = "Weather Wardrobe - Gardırop: " + GlobalBrain.AktifKullaniciAdSoyad;
+
+            // Veritabanı motorunu çalıştır
+            DbManager db = new DbManager();
+
+            // SADECE sisteme giren kişinin kıyafetlerini çekip direkt tabloya basıyoruz!
+            dgvKıyagetler.DataSource = db.KullaniciKiyafetleriniGetir(GlobalBrain.AktifKullaniciID);
+
+            // Tablodaki yazılar sıkışmasın, ekranı tam kaplasın diye ufak bir makyaj
+            dgvKıyagetler.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
 
         // 3. "Ne Giysem?" Butonuna Tıklandığında Çalışacak Kod
@@ -94,12 +102,15 @@ namespace WeatherWardrobe
 
         private void button1_Click(object sender, EventArgs e)
         {
+            // 1. Kıyafet Ekleme ekranını aç
             FormAddCloth formAddCloth = new FormAddCloth();
+            formAddCloth.ShowDialog(); // ShowDialog, o pencere kapanana kadar alt satıra geçmeyi engeller!
 
-            formAddCloth.ShowDialog();
-
-            dgvKıyagetler.DataSource = null;
-            dgvKıyagetler.DataSource = GlobalBrain.gardirop;
+            // 2. PENCERE KAPANDI! (Kullanıcı kıyafeti ekledi ve ana ekrana döndü)
+            // Hemen veritabanı motorunu tekrar çalıştırıp en güncel dolabı çekiyoruz:
+            DbManager db = new DbManager();
+            dgvKıyagetler.DataSource = null; // Önce tabloyu bir temizle
+            dgvKıyagetler.DataSource = db.KullaniciKiyafetleriniGetir(data.GlobalBrain.AktifKullaniciID);
         }
 
         private void dgvKombin_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -166,7 +177,7 @@ namespace WeatherWardrobe
                         string havaUrl = $"https://api.open-meteo.com/v1/forecast?latitude={enlem}&longitude={boylam}&current_weather=true";
 
                         // --- AŞAMA 2: Sıcaklığı Çek ---
-           
+
                         string havaCevap = await client.GetStringAsync(havaUrl);
 
                         using (JsonDocument havaDoc = JsonDocument.Parse(havaCevap))
@@ -186,6 +197,11 @@ namespace WeatherWardrobe
                     MessageBox.Show("Sistemsel bir hata oluştu:\n" + ex.Message, "Hata Detayı", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+        }
+
+        private void dgvKıyagetler_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }

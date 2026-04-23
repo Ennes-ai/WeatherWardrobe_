@@ -70,5 +70,83 @@ namespace WeatherWardrobe.data
             }
             return tablo;
         }
+
+
+        // KULLANICININ GARDIROBUNU GETİREN METOT
+        public DataTable KullaniciKiyafetleriniGetir(int userID)
+        {
+            DataTable tablo = new DataTable();
+            using (SqlConnection baglanti = new SqlConnection(connectionString))
+            {
+                // INNER JOIN kullanarak Clothes ve Categories tablolarını birleştiriyoruz.
+                // Böylece ekranda "1" yerine "Üst Giyim" yazacak. Hem de sütun isimlerini Türkçe yapıyoruz.
+                string sorgu = @"
+            SELECT 
+                C.Name AS 'Kıyafet Adı',
+                Cat.CategoryName AS 'Kategori',
+                C.Color AS 'Renk',
+                C.WeatherCondition AS 'Hava Durumu',
+                C.MinTemp AS 'Min °C',
+                C.MaxTemp AS 'Max °C',
+                C.IsHooded AS 'Kapüşonlu',
+                C.IsWaterproof AS 'Su Geçirmez'
+            FROM Clothes C
+            INNER JOIN Categories Cat ON C.CategoryID = Cat.ID
+            WHERE C.UserID = @userID";
+
+                using (SqlCommand komut = new SqlCommand(sorgu, baglanti))
+                {
+                    // @userID parametresine, GlobalBrain'deki ID'yi yollayacağız
+                    komut.Parameters.AddWithValue("@userID", userID);
+
+                    using (SqlDataAdapter adaptor = new SqlDataAdapter(komut))
+                    {
+                        adaptor.Fill(tablo);
+                    }
+                }
+            }
+            return tablo;
+        }
+
+        // YENİ KIYAFET EKLEME METODU
+        public bool KiyafetEkle(int userID, int categoryID, string isim, int minTemp, int maxTemp, string resimYolu)
+        {
+            using (SqlConnection baglanti = new SqlConnection(connectionString))
+            {
+                // Formda olmayan özellikleri (Renk vb.) varsayılan değerlerle SQL'e yolluyoruz ki hata vermesin
+                string sorgu = @"INSERT INTO Clothes 
+                        (UserID, CategoryID, Name, MinTemp, MaxTemp, ImagePath, Color, WeatherCondition, IsHooded, IsWaterproof) 
+                        VALUES 
+                        (@userID, @catID, @isim, @minT, @maxT, @resim, 'Belirtilmedi', 'Bilinmiyor', 0, 0)";
+
+                using (SqlCommand komut = new SqlCommand(sorgu, baglanti))
+                {
+                    // Verileri güvenli şekilde parametrelere yüklüyoruz
+                    komut.Parameters.AddWithValue("@userID", userID);
+                    komut.Parameters.AddWithValue("@catID", categoryID);
+                    komut.Parameters.AddWithValue("@isim", isim);
+                    komut.Parameters.AddWithValue("@minT", minTemp);
+                    komut.Parameters.AddWithValue("@maxT", maxTemp);
+
+                    // Eğer resim seçilmediyse SQL'e boş (NULL) gönder
+                    if (string.IsNullOrEmpty(resimYolu))
+                        komut.Parameters.AddWithValue("@resim", DBNull.Value);
+                    else
+                        komut.Parameters.AddWithValue("@resim", resimYolu);
+
+                    try
+                    {
+                        baglanti.Open();
+                        komut.ExecuteNonQuery(); // Ateşle!
+                        return true; // Başarılı
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Veritabanına eklenirken hata: " + ex.Message);
+                        return false; // Başarısız
+                    }
+                }
+            }
+        }
     }
 }

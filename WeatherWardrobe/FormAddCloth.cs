@@ -1,4 +1,6 @@
-﻿using WeatherWardrobe.data;
+﻿using System;
+using System.Windows.Forms;
+using WeatherWardrobe.data;
 using WeatherWardrobe.Model;
 
 namespace WeatherWardrobe
@@ -6,45 +8,40 @@ namespace WeatherWardrobe
     public partial class FormAddCloth : Form
     {
         private string kıyafetAdı;
-        private string kategori;
         private int maksSıcaklık;
         private int minSıcaklık;
-        //private List<Cloths> gardırop = new List<Cloths>(); // global gardırop var artık
-        private string seçilenResimYolu;
+        private string seçilenResimYolu = "";
 
         public FormAddCloth()
         {
             InitializeComponent();
 
-            // comboKategori initialization moved to constructor
-            comboKategori.Items.Add("Üst Giyim");
-            comboKategori.Items.Add("Alt Giyim");
-            comboKategori.Items.Add("Dış Giyim");
-            comboKategori.Items.Add("Ayakkabı");
-            comboKategori.SelectedIndex = 0; // Hiçbir kategori seçili değil
+            // 1. DÜZELTME: Kategorileri elle değil, veritabanından çekiyoruz!
+            DbManager db = new DbManager();
+            comboKategori.DataSource = db.KategorileriGetir();
+            comboKategori.DisplayMember = "CategoryName"; // Ekranda okunacak isim
+            comboKategori.ValueMember = "ID";             // SQL'e gidecek ID numarası
         }
+
         private void KaydetButton_Click(object sender, EventArgs e)
         {
             kıyafetAdı = textKıyafet.Text;
-            kategori = comboKategori.Text;
             maksSıcaklık = (int)numericMaksSıcak.Value;
             minSıcaklık = (int)numericMinSıcak.Value;
 
+            // Senin o harika hata kontrol metodun çalışıyor
             if (Check())
             {
-                // Veritabanına kaydetme işlemi burada yapılacak
-                if (GlobalBrain.gardirop != null)
-                {
-                    GeciciKaydet();
-                }
+                VeritabaninaKaydet();
             }
         }
 
+        // SENİN YAZDIĞIN KUSURSUZ KONTROL METODU (Aynen kaldı)
         private bool Check()
         {
-            if (string.IsNullOrWhiteSpace(kıyafetAdı) || string.IsNullOrWhiteSpace(kategori))
+            if (string.IsNullOrWhiteSpace(kıyafetAdı))
             {
-                MessageBox.Show("Lütfen tüm alanları doldurun.", "Eksik Bilgi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Lütfen kıyafet adını doldurun.", "Eksik Bilgi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
             if (maksSıcaklık < minSıcaklık)
@@ -60,30 +57,27 @@ namespace WeatherWardrobe
             return true;
         }
 
-        private bool GeciciKaydet()
+        // 2. DÜZELTME: Geçici listeye değil, GERÇEK SQL VERİTABANINA KAYDEDEN KISIM
+        private void VeritabaninaKaydet()
         {
-            // Veritabanına kaydetme işlemi burada yapılacak!!!!
-            Cloths yeniKıyafet = new Cloths
+            // SQL'e yazı değil ID göndermemiz lazım (Üst giyim değil, 1 numarası gidecek)
+            int katID = Convert.ToInt32(comboKategori.SelectedValue);
+            int kiminIDsi = GlobalBrain.AktifKullaniciID; // Sistemi Doğukan mı Dilara mı açtıysa onun ID'si!
+
+            DbManager db = new DbManager();
+            bool basariliMi = db.KiyafetEkle(kiminIDsi, katID, kıyafetAdı, minSıcaklık, maksSıcaklık, seçilenResimYolu);
+
+            if (basariliMi)
             {
-                Name = kıyafetAdı,
-                Category = kategori,
-                MinTemp = minSıcaklık,
-                MaxTemp = maksSıcaklık,
-                ImagePath = seçilenResimYolu,
-            };
-            GlobalBrain.gardirop.Add(yeniKıyafet);
-            MessageBox.Show($"{yeniKıyafet.Name} başarıyla listeye eklendi. Toplam kıyafet sayısı: {GlobalBrain.gardirop.Count}");
-            return true;
+                MessageBox.Show($"{kıyafetAdı} başarıyla gardırobuna eklendi!", "Sistem Mesajı", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                this.Close(); // Başarıyla eklenirse pencereyi kapat
+            }
         }
 
         private void KapatButton_Click(object sender, EventArgs e)
         {
-            Application.Exit();
-        }
-
-        private void numericMinSıcak_ValueChanged(object sender, EventArgs e)
-        {
-
+            // 3. DÜZELTME: Application.Exit her şeyi kapatır. this.Close sadece bu ufak pencereyi kapatır.
+            this.Close();
         }
 
         private void buttonResimSeç_Click(object sender, EventArgs e)
@@ -97,7 +91,11 @@ namespace WeatherWardrobe
                 seçilenResimYolu = openFileDialog.FileName;
                 PicKiyafet.ImageLocation = seçilenResimYolu;
             }
+        }
 
+        // Yanlışlıkla tıklanan boş metot (hata vermesin diye duruyor)
+        private void numericMinSıcak_ValueChanged(object sender, EventArgs e)
+        {
         }
     }
 }
