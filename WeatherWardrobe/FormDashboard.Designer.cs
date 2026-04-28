@@ -40,6 +40,7 @@
             txtŞehir = new TextBox();
             label2 = new Label();
             button1 = new Button();
+            checkYagmur = new CheckBox();
             ((System.ComponentModel.ISupportInitialize)dgvKıyagetler).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericHava).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvKombin).BeginInit();
@@ -166,11 +167,23 @@
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click_1;
             // 
+            // checkYagmur
+            // 
+            checkYagmur.AutoSize = true;
+            checkYagmur.Location = new Point(617, 89);
+            checkYagmur.Name = "checkYagmur";
+            checkYagmur.Size = new Size(119, 24);
+            checkYagmur.TabIndex = 12;
+            checkYagmur.Text = "YagmurVarMi";
+            checkYagmur.UseVisualStyleBackColor = true;
+            checkYagmur.CheckedChanged += checkBox1_CheckedChanged;
+            // 
             // FormDashboard
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(914, 600);
+            Controls.Add(checkYagmur);
             Controls.Add(button1);
             Controls.Add(label2);
             Controls.Add(txtŞehir);
@@ -209,5 +222,6 @@
         private TextBox txtŞehir;
         private Label label2;
         private Button button1;
+        private CheckBox checkYagmur;
     }
 }
