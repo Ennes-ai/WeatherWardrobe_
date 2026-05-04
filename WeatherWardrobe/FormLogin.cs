@@ -55,5 +55,16 @@ namespace WeatherWardrobe
         {
             // Burası şimdilik boş kalabilir, Enes buraya ileride belki "yazarken harfleri büyütme" falan ekler
         }
+
+        private void ButtonKayıtOl_Click(object sender, EventArgs e)
+        {
+            FormRegister frm = new FormRegister();
+            frm.ShowDialog();
+        }
+
+        private void TextKullanıcıAdi_TextChanged_1(object sender, EventArgs e)
+        {
+
+        }
     }
 }
