@@ -97,5 +97,36 @@ namespace WeatherWardrobe
         private void numericMinSıcak_ValueChanged(object sender, EventArgs e)
         {
         }
+
+        private void btnResim_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Title = "Kıyafet Resmi Seç";
+            openFileDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp";
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                seçilenResimYolu = openFileDialog.FileName;
+                PicKiyafet.ImageLocation = seçilenResimYolu;
+            }
+        }
+
+        private void btnKaydet_Click(object sender, EventArgs e)
+        {
+            kıyafetAdı = textKıyafet.Text;
+            maksSıcaklık = (int)numericMaksSıcak.Value;
+            minSıcaklık = (int)numericMinSıcak.Value;
+
+            // Senin o harika hata kontrol metodun çalışıyor
+            if (Check())
+            {
+                VeritabaninaKaydet();
+            }
+        }
+
+        private void guna2CustomCheckBox2_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
