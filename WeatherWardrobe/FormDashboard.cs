@@ -39,7 +39,7 @@ namespace WeatherWardrobe
             gunaSehirler.Items.AddRange(iller); // tek satırda tüm liste
             gunaSehirler.SelectedItem = "Eskişehir";
 
-            
+            checkYagmur.AutoCheck = false;
 
 
             #region DataGridView 
