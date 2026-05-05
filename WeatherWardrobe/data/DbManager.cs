@@ -8,9 +8,9 @@ namespace WeatherWardrobe.data
     public class DbManager
     {
         // 1. DÜZELTME BURADA: Adrese \SQLEXPRESS eklendi ve yolu bozmasın diye başına @ konuldu.
-        private string connectionString = @"Server=localhost\SQLEXPRESS;Database=WeatherWardrobe;Trusted_Connection=True;TrustServerCertificate=True;";
+        private string connectionString = @"Server=.;Database=WeatherWardrobe;Trusted_Connection=True;TrustServerCertificate=True;";
 
-        // TEST METODUMUZ (Hatıra olarak kalabilir - Enes'in yazdığı hali)
+        
         public bool BaglantiyiTestEt()
         {
             using (SqlConnection baglanti = new SqlConnection(connectionString))
@@ -29,7 +29,7 @@ namespace WeatherWardrobe.data
             }
         }
 
-        // KATEGORİLERİ GETİREN METOT (Enes'in yazdığı hali)
+       
         public DataTable KategorileriGetir()
         {
             DataTable tablo = new DataTable();
@@ -55,7 +55,7 @@ namespace WeatherWardrobe.data
             using (SqlConnection baglanti = new SqlConnection(connectionString))
             {
                 // SQL Injection hacklerine karşı @ parametreleri ile güvenli sorgu
-                string sorgu = "SELECT ID, FirstName, LastName FROM Users WHERE Username = @user AND Password = @pass";
+                string sorgu = "SELECT * FROM Users WHERE Username = @user AND Password = @pass";
 
                 using (SqlCommand komut = new SqlCommand(sorgu, baglanti))
                 {
@@ -109,7 +109,17 @@ namespace WeatherWardrobe.data
         }
 
         // YENİ KIYAFET EKLEME METODU
-        public bool KiyafetEkle(int userID, int categoryID, string isim, int minTemp, int maxTemp, string resimYolu)
+        public bool KiyafetEkle(
+            int userID,
+            int categoryID,
+            string isim, 
+            int minTemp, 
+            int maxTemp, 
+            string resimYolu,
+            string kıyafetRengi,
+            bool kapşonlumu,
+            bool suGeçiriyormu
+            )
         {
             using (SqlConnection baglanti = new SqlConnection(connectionString))
             {
@@ -117,7 +127,7 @@ namespace WeatherWardrobe.data
                 string sorgu = @"INSERT INTO Clothes 
                         (UserID, CategoryID, Name, MinTemp, MaxTemp, ImagePath, Color, WeatherCondition, IsHooded, IsWaterproof) 
                         VALUES 
-                        (@userID, @catID, @isim, @minT, @maxT, @resim, 'Belirtilmedi', 'Bilinmiyor', 0, 0)";
+                        (@userID, @catID, @isim, @minT, @maxT, @resim, @renk, 'Bilinmiyor', @kapşonlu, @suGeçiriyormu)";
 
                 using (SqlCommand komut = new SqlCommand(sorgu, baglanti))
                 {
@@ -127,6 +137,9 @@ namespace WeatherWardrobe.data
                     komut.Parameters.AddWithValue("@isim", isim);
                     komut.Parameters.AddWithValue("@minT", minTemp);
                     komut.Parameters.AddWithValue("@maxT", maxTemp);
+                    komut.Parameters.AddWithValue("@renk", kıyafetRengi);
+                    komut.Parameters.AddWithValue("@kapşonlu", kapşonlumu);
+                    komut.Parameters.AddWithValue("@suGeçiriyormu", suGeçiriyormu);
 
                     // Eğer resim seçilmediyse SQL'e boş (NULL) gönder
                     if (string.IsNullOrEmpty(resimYolu))

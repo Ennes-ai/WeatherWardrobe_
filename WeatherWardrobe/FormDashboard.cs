@@ -12,35 +12,108 @@ using WeatherWardrobe.Model;
 namespace WeatherWardrobe
 {
     public partial class FormDashboard : Form
+
     {
-        // 1. Tüm formun görebileceği geçici gardırop listemiz
-        //List<Cloths> gardiropListesi = new List<Cloths>();
+        double sicaklik = 0;
+        string[] iller = {
+    "Adana", "Adıyaman", "Afyonkarahisar", "Ağrı", "Amasya", "Ankara", "Antalya", "Artvin", "Aydın", "Balıkesir",
+    "Bilecik", "Bingöl", "Bitlis", "Bolu", "Burdur", "Bursa", "Çanakkale", "Çankırı", "Çorum", "Denizli",
+    "Diyarbakır", "Edirne", "Elazığ", "Erzincan", "Erzurum", "Eskişehir", "Gaziantep", "Giresun", "Gümüşhane", "Hakkari",
+    "Hatay", "Isparta", "Mersin", "İstanbul", "İzmir", "Kars", "Kastamonu", "Kayseri", "Kırklareli", "Kırşehir",
+    "Kocaeli", "Konya", "Kütahya", "Malatya", "Manisa", "Kahramanmaraş", "Mardin", "Muğla", "Muş", "Nevşehir",
+    "Niğde", "Ordu", "Rize", "Sakarya", "Samsun", "Siirt", "Sinop", "Sivas", "Tekirdağ", "Tokat",
+    "Trabzon", "Tunceli", "Şanlıurfa", "Uşak", "Van", "Yozgat", "Zonguldak", "Aksaray", "Bayburt", "Karaman",
+    "Kırıkkale", "Batman", "Şırnak", "Bartın", "Ardahan", "Iğdır", "Yalova", "Karabük", "Kilis", "Osmaniye", "Düzce"
+};
 
         public FormDashboard()
         {
             InitializeComponent();
         }
 
-        // 2. Form açıldığında çalışacak kod (Vitrin doluyor)
+
         private void FormDashboard_Load(object sender, EventArgs e)
         {
-            // Formun en üstüne giriş yapan kişinin adını yazalım, şık dursun
-            this.Text = "Weather Wardrobe - Gardırop: " + GlobalBrain.AktifKullaniciAdSoyad;
+
+            gunaSehirler.Items.Clear();
+            gunaSehirler.Items.AddRange(iller); // tek satırda tüm liste
+            gunaSehirler.SelectedItem = "Eskişehir";
+
+            
+
+
+            #region DataGridView 
+            guna2DataGridView1.ReadOnly = true;
+            // 1. Genel Arka Plan ve Çizgiler (Gece Siyahı)
+            guna2DataGridView1.BackgroundColor = Color.FromArgb(24, 24, 25);
+            guna2DataGridView1.GridColor = Color.FromArgb(40, 40, 40);
+            guna2DataGridView1.BorderStyle = BorderStyle.None;
+
+            // 2. Sütun Başlıkları (Koyu Bordo Zemin, Altın Sarısı Yazı)
+            guna2DataGridView1.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(128, 0, 0);
+            guna2DataGridView1.ColumnHeadersDefaultCellStyle.ForeColor = Color.FromArgb(212, 175, 55);
+            guna2DataGridView1.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            guna2DataGridView1.ColumnHeadersDefaultCellStyle.SelectionBackColor = Color.FromArgb(150, 0, 0);
+            guna2DataGridView1.ColumnHeadersHeight = 40; // Başlıkları biraz kalınlaştıralım
+
+            // 3. Normal Satırlar (Koyu Gri Zemin, Açık Gri Yazı)
+            guna2DataGridView1.DefaultCellStyle.BackColor = Color.FromArgb(30, 30, 30);
+            guna2DataGridView1.DefaultCellStyle.ForeColor = Color.LightGray;
+            // Bir satıra tıklandığında (Seçildiğinde) arkası hafif kan kırmızısı olsun
+            guna2DataGridView1.DefaultCellStyle.SelectionBackColor = Color.FromArgb(64, 0, 0);
+            guna2DataGridView1.DefaultCellStyle.SelectionForeColor = Color.White;
+
+            // 4. Okunabilirlik İçin Çift Satır Rengi (Zebra Efekti)
+            guna2DataGridView1.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(24, 24, 25);
+
+            // 5. Windows'un Çirkin Standartlarını Kapatma Ayarları
+            guna2DataGridView1.EnableHeadersVisualStyles = false; // Kendi renklerimizi zorla
+            guna2DataGridView1.RowHeadersVisible = false; // En soldaki gereksiz ok işaretini gizle
+            guna2DataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect; // Tıklayınca tüm satırı seçsin
+            guna2DataGridView1.AllowUserToAddRows = false; // En alttaki boş çirkin satırı kaldır
+                                                           // Formun en üstüne giriş yapan kişinin adını yazalım, şık dursun
+
+            // 1. Genel Arka Plan ve Çizgiler (Gece Siyahı)
+            dgvKombin.ReadOnly = true;
+            dgvKombin.BackgroundColor = Color.FromArgb(24, 24, 25);
+            dgvKombin.GridColor = Color.FromArgb(40, 40, 40);
+            dgvKombin.BorderStyle = BorderStyle.None;
+
+            // 2. Sütun Başlıkları (Koyu Bordo Zemin, Altın Sarısı Yazı)
+            dgvKombin.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(128, 0, 0);
+            dgvKombin.ColumnHeadersDefaultCellStyle.ForeColor = Color.FromArgb(212, 175, 55);
+            dgvKombin.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            dgvKombin.ColumnHeadersDefaultCellStyle.SelectionBackColor = Color.FromArgb(150, 0, 0);
+            dgvKombin.ColumnHeadersHeight = 40; // Başlıkları biraz kalınlaştıralım
+
+            // 3. Normal Satırlar (Koyu Gri Zemin, Açık Gri Yazı)
+            dgvKombin.DefaultCellStyle.BackColor = Color.FromArgb(30, 30, 30);
+            dgvKombin.DefaultCellStyle.ForeColor = Color.LightGray;
+            // Bir satıra tıklandığında (Seçildiğinde) arkası hafif kan kırmızısı olsun
+            dgvKombin.DefaultCellStyle.SelectionBackColor = Color.FromArgb(64, 0, 0);
+            dgvKombin.DefaultCellStyle.SelectionForeColor = Color.White;
+
+            // 4. Okunabilirlik İçin Çift Satır Rengi (Zebra Efekti)
+            dgvKombin.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(24, 24, 25);
+
+            // 5. Windows'un Çirkin Standartlarını Kapatma Ayarları
+            dgvKombin.EnableHeadersVisualStyles = false; // Kendi renklerimizi zorla
+            dgvKombin.RowHeadersVisible = false; // En soldaki gereksiz ok işaretini gizle
+            dgvKombin.SelectionMode = DataGridViewSelectionMode.FullRowSelect; // Tıklayınca tüm satırı seçsin
+            dgvKombin.AllowUserToAddRows = false;
+            #endregion
+            gunaHosgeldin.Text = "Hoşgeldiniz : " + GlobalBrain.AktifKullaniciAdSoyad;
 
             // Veritabanı motorunu çalıştır
             DbManager db = new DbManager();
+            guna2DataGridView1.DataSource = db.KullaniciKiyafetleriniGetir(GlobalBrain.AktifKullaniciID);
 
-            // SADECE sisteme giren kişinin kıyafetlerini çekip direkt tabloya basıyoruz!
-            dgvKıyagetler.DataSource = db.KullaniciKiyafetleriniGetir(GlobalBrain.AktifKullaniciID);
+            guna2DataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-            // Tablodaki yazılar sıkışmasın, ekranı tam kaplasın diye ufak bir makyaj
-            dgvKıyagetler.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+
         }
 
-        // 3. "Ne Giysem?" Butonuna Tıklandığında Çalışacak Kod
-
-
-        // --- 1. GERÇEK MODA ZEKASI (Renk Uyumu Algoritması) ---
         private bool RenkUyumlumu(string ustRenk, string altRenk)
         {
             if (string.IsNullOrEmpty(ustRenk) || string.IsNullOrEmpty(altRenk) || ustRenk == "Belirtilmedi" || altRenk == "Belirtilmedi")
@@ -67,12 +140,51 @@ namespace WeatherWardrobe
 
             return true;
         }
-
-
-        // --- 2. "NE GİYSEM?" BUTONUNA TIKLANINCA ÇALIŞACAK ANA MOTOR ---
-        private void ButtonÖneriGetir_Click(object sender, EventArgs e)
+        #region Gereksiz
+        private void button1_Click(object sender, EventArgs e)
         {
-            int sicaklik = (int)numericHava.Value;
+        }
+
+        private void dgvKombin_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+        private void dgvKıyagetler_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+        private void guna2GradientPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void guna2DataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        #endregion
+        private void btnYeniKıyafet_Click(object sender, EventArgs e)
+        {
+
+            FormAddCloth formAddCloth = new FormAddCloth();
+            formAddCloth.ShowDialog();
+
+
+            DbManager db = new DbManager();
+            guna2DataGridView1.DataSource = null;
+            guna2DataGridView1.DataSource = db.KullaniciKiyafetleriniGetir(data.GlobalBrain.AktifKullaniciID);
+        }
+
+        private void btnNeGiysem_Click(object sender, EventArgs e)
+        {
+
+            int sicakliks = (int)sicaklik;
             bool yagmurVarMi = checkYagmur.Checked;
 
             DbManager db = new DbManager();
@@ -176,140 +288,89 @@ namespace WeatherWardrobe
                 MessageBox.Show("Tam bir kombin dizemedim, bazı temel parçalar eksik!", "Bilgi", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
-
-
-        // --- 3. KOMBİNDEKİ EŞYAYA TIKLAYINCA RESMİNİ GÖSTEREN MOTOR ---
-        // --- 3. KOMBİNDEKİ EŞYAYA TIKLAYINCA RESMİNİ GÖSTEREN MOTOR (Mermi Geçirmez Versiyon) ---
-        private void dgvKombin_SelectionChanged(object sender, EventArgs e)
+        private async void btnHavaDurumu_Click(object sender, EventArgs e)
         {
-            // Eğer tablo boşsa veya seçili satır yoksa hiç işlem yapmadan çık (Çökmeyi engeller!)
-            if (dgvKombin.SelectedRows.Count == 0 || dgvKombin.CurrentRow == null)
+
+        }
+
+        private async Task HavaDurumunuÇek(string Sehir)
+        {
+            if (string.IsNullOrEmpty(Sehir))
             {
-                PicÖnİzleme.Image = null;
                 return;
             }
-
-            try
-            {
-                // En Garanti Yöntem: Veriyi arka plan objelerinden değil, direkt tablodaki hücreden çekiyoruz!
-                var hucreVerisi = dgvKombin.SelectedRows[0].Cells["ResimYolu"].Value;
-
-                // Hücre boş değilse ve geçerli bir veri varsa
-                if (hucreVerisi != null && hucreVerisi != DBNull.Value)
-                {
-                    string resimYolu = hucreVerisi.ToString();
-
-                    if (!string.IsNullOrWhiteSpace(resimYolu))
-                    {
-                        PicÖnİzleme.ImageLocation = resimYolu;
-                        return; // Resmi yükledik, metottan çıkabiliriz.
-                    }
-                }
-
-                // Eğer resim yolu boşsa veya yukarıdaki şartlar uymadıysa kutuyu temizle
-                PicÖnİzleme.Image = null;
-            }
-            catch (Exception)
-            {
-                // Eğer tablo ilk yüklenirken veya yenilenirken anlık bir kayma olursa programın çökmesini engeller
-                PicÖnİzleme.Image = null;
-            }
-        }
-
-
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            // 1. Kıyafet Ekleme ekranını aç
-            FormAddCloth formAddCloth = new FormAddCloth();
-            formAddCloth.ShowDialog(); // ShowDialog, o pencere kapanana kadar alt satıra geçmeyi engeller!
-
-            // 2. PENCERE KAPANDI! (Kullanıcı kıyafeti ekledi ve ana ekrana döndü)
-            // Hemen veritabanı motorunu tekrar çalıştırıp en güncel dolabı çekiyoruz:
-            DbManager db = new DbManager();
-            dgvKıyagetler.DataSource = null; // Önce tabloyu bir temizle
-            dgvKıyagetler.DataSource = db.KullaniciKiyafetleriniGetir(data.GlobalBrain.AktifKullaniciID);
-        }
-
-        private void dgvKombin_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-
-
-        private async void button1_Click_1(object sender, EventArgs e)
-        {
-            // 1. Kutudaki şehir adını alıyoruz
-            string sehir = txtŞehir.Text.Trim();
-
-            if (string.IsNullOrEmpty(sehir))
-            {
-                MessageBox.Show("Lütfen bir şehir adı girin!", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
+            guna2Progres.Visible = true;
+            guna2Progres.Start();
 
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    // EN KRİTİK NOKTA: Türkçe karakterleri internet diline çeviriyoruz (KÜTAHYA -> K%C3%9CTAHYA)
-                    string arananSehir = Uri.EscapeDataString(sehir);
-
-                    // --- AŞAMA 1: Şehrin Koordinatlarını Bul ---
+                    string arananSehir = Uri.EscapeDataString(Sehir);
                     string geoUrl = $"https://geocoding-api.open-meteo.com/v1/search?name={arananSehir}&count=1&language=tr&format=json";
                     string geoCevap = await client.GetStringAsync(geoUrl);
 
                     using (JsonDocument geoDoc = JsonDocument.Parse(geoCevap))
                     {
-                        // Şehir gerçekten bulundu mu kontrolü yapıyoruz (Uydurma bir şey yazıldıysa hata vermesin diye)
                         if (!geoDoc.RootElement.TryGetProperty("results", out JsonElement sonuclarArray))
                         {
                             MessageBox.Show("Böyle bir şehir bulamadım kaptan! Yazılışını kontrol et.", "Bulunamadı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             return;
                         }
 
-                        // API'den gelen listeden ilk şehrin koordinatlarını çekiyoruz
                         var sonuclar = sonuclarArray[0];
                         double lat = sonuclar.GetProperty("latitude").GetDouble();
                         double lon = sonuclar.GetProperty("longitude").GetDouble();
 
                         string enlem = lat.ToString().Replace(",", ".");
                         string boylam = lon.ToString().Replace(",", ".");
-
                         string havaUrl = $"https://api.open-meteo.com/v1/forecast?latitude={enlem}&longitude={boylam}&current_weather=true";
-
-                        // --- AŞAMA 2: Sıcaklığı Çek ---
-
                         string havaCevap = await client.GetStringAsync(havaUrl);
 
                         using (JsonDocument havaDoc = JsonDocument.Parse(havaCevap))
                         {
-                            // Sıcaklığı çekiyoruz. (Replace ile nokta/virgül karmaşasını çözüyoruz)
                             double sicaklik = havaDoc.RootElement.GetProperty("current_weather").GetProperty("temperature").GetDouble();
 
-                            // 3. Ekrana Yazdır!
-                            numericHava.Value = (decimal)sicaklik;
-                            MessageBox.Show($"{sehir} için hava durumu başarıyla güncellendi: {sicaklik}°C", "Başarılı", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            int havaKodu = havaDoc.RootElement.GetProperty("current_weather").GetProperty("weathercode").GetInt32();
+
+                            // 3. WMO (Dünya Meteoroloji Örgütü) Kodlarına göre yağmur kontrolü
+                            // 51-67 arası: Çiseleme, Yağmur ve Dondurucu Yağmur
+                            // 80-99 arası: Sağanak Yağmur, Kar ve Fırtına
+                            bool yagmurVarMi = false;
+                            if ((havaKodu >= 51 && havaKodu <= 67) || (havaKodu >= 80 && havaKodu <= 99))
+                            {
+                                yagmurVarMi = true; 
+                            }
+
+                           
+                            gunaHavaSıcaklık.Text = $"Hava sıcaklığı : {sicaklik}°C";
+
+                            
+                            checkYagmur.Checked = yagmurVarMi;
+
+                            // Sadece ekrandaki yazıyı güncelliyoruz, zırt pırt MessageBox çıkmasın
+                            gunaHavaSıcaklık.Text = $"Hava sıcaklığı : {sicaklik}°C";
+
+                            guna2Progres.Visible = false;
+                            guna2Progres.Stop();
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    // GERÇEK HATAYI GÖSTER: Artık kendi mesajımızı değil, sistemin verdiği gerçek hatayı yazdırıyoruz ki sorunu bilelim!
                     MessageBox.Show("Sistemsel bir hata oluştu:\n" + ex.Message, "Hata Detayı", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    guna2Progres.Visible = false;
+                    guna2Progres.Stop();
                 }
+
             }
         }
 
-        private void dgvKıyagetler_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private async void gunaSehirler_SelectedIndexChanged(object sender, EventArgs e)
         {
+            string sehir = gunaSehirler.SelectedItem.ToString();
 
-        }
-
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
-        {
-
+            await HavaDurumunuÇek(sehir);
         }
     }
 }

@@ -11,6 +11,10 @@ namespace WeatherWardrobe
         private int maksSıcaklık;
         private int minSıcaklık;
         private string seçilenResimYolu = "";
+        private string kıyafetRengi;
+        private bool kapşonlumu;
+        private bool suGeçiriyormu;
+
 
         public FormAddCloth()
         {
@@ -23,20 +27,8 @@ namespace WeatherWardrobe
             comboKategori.ValueMember = "ID";             // SQL'e gidecek ID numarası
         }
 
-        private void KaydetButton_Click(object sender, EventArgs e)
-        {
-            kıyafetAdı = textKıyafet.Text;
-            maksSıcaklık = (int)numericMaksSıcak.Value;
-            minSıcaklık = (int)numericMinSıcak.Value;
 
-            // Senin o harika hata kontrol metodun çalışıyor
-            if (Check())
-            {
-                VeritabaninaKaydet();
-            }
-        }
 
-        // SENİN YAZDIĞIN KUSURSUZ KONTROL METODU (Aynen kaldı)
         private bool Check()
         {
             if (string.IsNullOrWhiteSpace(kıyafetAdı))
@@ -54,49 +46,53 @@ namespace WeatherWardrobe
                 MessageBox.Show("Lütfen bir kategori seçin.", "Kategori Seçimi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
+            if (gunaKıyafetRengi.Text == null)
+            {
+                MessageBox.Show("Lütfen bir renk seçin.", "Renk Seçimi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
             return true;
         }
 
-        // 2. DÜZELTME: Geçici listeye değil, GERÇEK SQL VERİTABANINA KAYDEDEN KISIM
+
         private void VeritabaninaKaydet()
         {
-            // SQL'e yazı değil ID göndermemiz lazım (Üst giyim değil, 1 numarası gidecek)
+
             int katID = Convert.ToInt32(comboKategori.SelectedValue);
-            int kiminIDsi = GlobalBrain.AktifKullaniciID; // Sistemi Doğukan mı Dilara mı açtıysa onun ID'si!
+            int kiminIDsi = GlobalBrain.AktifKullaniciID;
 
             DbManager db = new DbManager();
-            bool basariliMi = db.KiyafetEkle(kiminIDsi, katID, kıyafetAdı, minSıcaklık, maksSıcaklık, seçilenResimYolu);
+            bool basariliMi = db.KiyafetEkle(
+                userID: kiminIDsi,
+                categoryID: katID,
+                isim: kıyafetAdı,
+                minTemp: minSıcaklık,
+                maxTemp: maksSıcaklık,
+                resimYolu: seçilenResimYolu,
+                kıyafetRengi: kıyafetRengi,
+                kapşonlumu: kapşonlumu,
+                suGeçiriyormu: suGeçiriyormu
+                );
 
             if (basariliMi)
             {
                 MessageBox.Show($"{kıyafetAdı} başarıyla gardırobuna eklendi!", "Sistem Mesajı", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                this.Close(); // Başarıyla eklenirse pencereyi kapat
+                this.Close();
             }
         }
-
-        private void KapatButton_Click(object sender, EventArgs e)
-        {
-            // 3. DÜZELTME: Application.Exit her şeyi kapatır. this.Close sadece bu ufak pencereyi kapatır.
-            this.Close();
-        }
-
-        private void buttonResimSeç_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Title = "Kıyafet Resmi Seç";
-            openFileDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp";
-
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                seçilenResimYolu = openFileDialog.FileName;
-                PicKiyafet.ImageLocation = seçilenResimYolu;
-            }
-        }
-
-        // Yanlışlıkla tıklanan boş metot (hata vermesin diye duruyor)
+        #region Gereksiz
         private void numericMinSıcak_ValueChanged(object sender, EventArgs e)
         {
         }
+        private void guna2CustomCheckBox2_Click(object sender, EventArgs e)
+        {
+
+        }
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+        #endregion
 
         private void btnResim_Click(object sender, EventArgs e)
         {
@@ -116,6 +112,9 @@ namespace WeatherWardrobe
             kıyafetAdı = textKıyafet.Text;
             maksSıcaklık = (int)numericMaksSıcak.Value;
             minSıcaklık = (int)numericMinSıcak.Value;
+            kıyafetRengi = gunaKıyafetRengi.Text;
+            kapşonlumu = gunaKapşonlumu.Checked;
+            suGeçiriyormu = gunaSuGeçiriyormu.Checked;
 
             // Senin o harika hata kontrol metodun çalışıyor
             if (Check())
@@ -124,9 +123,6 @@ namespace WeatherWardrobe
             }
         }
 
-        private void guna2CustomCheckBox2_Click(object sender, EventArgs e)
-        {
-
-        }
+        
     }
 }
