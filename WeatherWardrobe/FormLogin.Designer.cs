@@ -66,11 +66,12 @@
             guna2ControlBox1.FillColor = Color.FromArgb(192, 0, 0);
             guna2ControlBox1.HoverState.FillColor = Color.Maroon;
             guna2ControlBox1.IconColor = Color.White;
-            guna2ControlBox1.Location = new Point(756, 0);
+            guna2ControlBox1.Location = new Point(864, 0);
+            guna2ControlBox1.Margin = new Padding(3, 4, 3, 4);
             guna2ControlBox1.Name = "guna2ControlBox1";
             guna2ControlBox1.PressedColor = Color.Red;
             guna2ControlBox1.ShadowDecoration.CustomizableEdges = customizableEdges11;
-            guna2ControlBox1.Size = new Size(45, 29);
+            guna2ControlBox1.Size = new Size(51, 39);
             guna2ControlBox1.TabIndex = 7;
             // 
             // guna2HtmlLabel1
@@ -78,9 +79,10 @@
             guna2HtmlLabel1.BackColor = Color.Transparent;
             guna2HtmlLabel1.Font = new Font("Georgia", 36F, FontStyle.Bold | FontStyle.Italic);
             guna2HtmlLabel1.ForeColor = Color.FromArgb(212, 175, 55);
-            guna2HtmlLabel1.Location = new Point(420, 35);
+            guna2HtmlLabel1.Location = new Point(480, 47);
+            guna2HtmlLabel1.Margin = new Padding(3, 4, 3, 4);
             guna2HtmlLabel1.Name = "guna2HtmlLabel1";
-            guna2HtmlLabel1.Size = new Size(330, 58);
+            guna2HtmlLabel1.Size = new Size(408, 71);
             guna2HtmlLabel1.TabIndex = 8;
             guna2HtmlLabel1.Text = "Welcome sir.";
             // 
@@ -96,22 +98,24 @@
             gunaKullanıcıAdi.Font = new Font("Segoe UI", 9F);
             gunaKullanıcıAdi.ForeColor = Color.Black;
             gunaKullanıcıAdi.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            gunaKullanıcıAdi.Location = new Point(129, 134);
+            gunaKullanıcıAdi.Location = new Point(160, 178);
+            gunaKullanıcıAdi.Margin = new Padding(3, 5, 3, 5);
             gunaKullanıcıAdi.Name = "gunaKullanıcıAdi";
             gunaKullanıcıAdi.PlaceholderForeColor = Color.Gray;
             gunaKullanıcıAdi.PlaceholderText = "Enes Dursun....";
             gunaKullanıcıAdi.SelectedText = "";
             gunaKullanıcıAdi.ShadowDecoration.CustomizableEdges = customizableEdges9;
-            gunaKullanıcıAdi.Size = new Size(200, 36);
+            gunaKullanıcıAdi.Size = new Size(229, 48);
             gunaKullanıcıAdi.TabIndex = 9;
             // 
             // guna2HtmlLabel2
             // 
             guna2HtmlLabel2.BackColor = Color.Transparent;
             guna2HtmlLabel2.Font = new Font("Georgia", 12F, FontStyle.Regular, GraphicsUnit.Point, 162);
-            guna2HtmlLabel2.Location = new Point(23, 150);
+            guna2HtmlLabel2.Location = new Point(26, 200);
+            guna2HtmlLabel2.Margin = new Padding(3, 4, 3, 4);
             guna2HtmlLabel2.Name = "guna2HtmlLabel2";
-            guna2HtmlLabel2.Size = new Size(100, 20);
+            guna2HtmlLabel2.Size = new Size(130, 26);
             guna2HtmlLabel2.TabIndex = 10;
             guna2HtmlLabel2.Text = "Kullanıcı Adı : ";
             // 
@@ -127,22 +131,24 @@
             GunaSifre.Font = new Font("Segoe UI", 9F);
             GunaSifre.ForeColor = Color.Black;
             GunaSifre.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            GunaSifre.Location = new Point(129, 230);
+            GunaSifre.Location = new Point(160, 307);
+            GunaSifre.Margin = new Padding(3, 5, 3, 5);
             GunaSifre.Name = "GunaSifre";
             GunaSifre.PlaceholderForeColor = Color.Gray;
             GunaSifre.PlaceholderText = "1234....";
             GunaSifre.SelectedText = "";
             GunaSifre.ShadowDecoration.CustomizableEdges = customizableEdges7;
-            GunaSifre.Size = new Size(200, 36);
+            GunaSifre.Size = new Size(229, 48);
             GunaSifre.TabIndex = 11;
             // 
             // guna2HtmlLabel3
             // 
             guna2HtmlLabel3.BackColor = Color.Transparent;
             guna2HtmlLabel3.Font = new Font("Georgia", 12F, FontStyle.Regular, GraphicsUnit.Point, 162);
-            guna2HtmlLabel3.Location = new Point(78, 246);
+            guna2HtmlLabel3.Location = new Point(89, 328);
+            guna2HtmlLabel3.Margin = new Padding(3, 4, 3, 4);
             guna2HtmlLabel3.Name = "guna2HtmlLabel3";
-            guna2HtmlLabel3.Size = new Size(45, 20);
+            guna2HtmlLabel3.Size = new Size(56, 26);
             guna2HtmlLabel3.TabIndex = 12;
             guna2HtmlLabel3.Text = "Şifre : ";
             // 
@@ -163,10 +169,11 @@
             btnGirisYap.ForeColor = Color.White;
             btnGirisYap.HoverState.FillColor = Color.Red;
             btnGirisYap.HoverState.Font = new Font("Georgia", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 162);
-            btnGirisYap.Location = new Point(140, 315);
+            btnGirisYap.Location = new Point(160, 420);
+            btnGirisYap.Margin = new Padding(3, 4, 3, 4);
             btnGirisYap.Name = "btnGirisYap";
             btnGirisYap.ShadowDecoration.CustomizableEdges = customizableEdges5;
-            btnGirisYap.Size = new Size(180, 45);
+            btnGirisYap.Size = new Size(206, 60);
             btnGirisYap.TabIndex = 13;
             btnGirisYap.Text = "Giriş Yap";
             btnGirisYap.Click += btnGirisYap_Click;
@@ -175,9 +182,10 @@
             // 
             guna2HtmlLabel4.BackColor = Color.Transparent;
             guna2HtmlLabel4.Font = new Font("Georgia", 12F, FontStyle.Regular, GraphicsUnit.Point, 162);
-            guna2HtmlLabel4.Location = new Point(106, 366);
+            guna2HtmlLabel4.Location = new Point(121, 488);
+            guna2HtmlLabel4.Margin = new Padding(3, 4, 3, 4);
             guna2HtmlLabel4.Name = "guna2HtmlLabel4";
-            guna2HtmlLabel4.Size = new Size(241, 20);
+            guna2HtmlLabel4.Size = new Size(306, 26);
             guna2HtmlLabel4.TabIndex = 14;
             guna2HtmlLabel4.Text = "Hesabın yokmu Hemen Kayıt OL!";
             // 
@@ -198,10 +206,11 @@
             gunaKayıtOL.ForeColor = Color.White;
             gunaKayıtOL.HoverState.FillColor = Color.Red;
             gunaKayıtOL.HoverState.Font = new Font("Georgia", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 162);
-            gunaKayıtOL.Location = new Point(140, 393);
+            gunaKayıtOL.Location = new Point(160, 524);
+            gunaKayıtOL.Margin = new Padding(3, 4, 3, 4);
             gunaKayıtOL.Name = "gunaKayıtOL";
             gunaKayıtOL.ShadowDecoration.CustomizableEdges = customizableEdges3;
-            gunaKayıtOL.Size = new Size(180, 45);
+            gunaKayıtOL.Size = new Size(206, 60);
             gunaKayıtOL.TabIndex = 15;
             gunaKayıtOL.Text = "Kayıt Ol!";
             gunaKayıtOL.Click += gunaKayıtOL_Click;
@@ -214,20 +223,21 @@
             // 
             // guna2ProgressIndicator1
             // 
-            guna2ProgressIndicator1.Location = new Point(335, 176);
+            guna2ProgressIndicator1.Location = new Point(383, 235);
+            guna2ProgressIndicator1.Margin = new Padding(3, 4, 3, 4);
             guna2ProgressIndicator1.Name = "guna2ProgressIndicator1";
             guna2ProgressIndicator1.ProgressColor = Color.Maroon;
             guna2ProgressIndicator1.ShadowDecoration.CustomizableEdges = customizableEdges1;
-            guna2ProgressIndicator1.Size = new Size(90, 90);
+            guna2ProgressIndicator1.Size = new Size(103, 120);
             guna2ProgressIndicator1.TabIndex = 16;
             guna2ProgressIndicator1.Visible = false;
             // 
             // FormLogin
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlDarkDark;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(914, 600);
             Controls.Add(guna2ProgressIndicator1);
             Controls.Add(gunaKayıtOL);
             Controls.Add(guna2HtmlLabel4);
@@ -239,6 +249,7 @@
             Controls.Add(guna2HtmlLabel1);
             Controls.Add(guna2ControlBox1);
             FormBorderStyle = FormBorderStyle.None;
+            Margin = new Padding(3, 4, 3, 4);
             Name = "FormLogin";
             Text = "FormLogin";
             ResumeLayout(false);

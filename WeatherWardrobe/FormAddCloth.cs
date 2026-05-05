@@ -116,7 +116,7 @@ namespace WeatherWardrobe
             kapşonlumu = gunaKapşonlumu.Checked;
             suGeçiriyormu = gunaSuGeçiriyormu.Checked;
 
-            // Senin o harika hata kontrol metodun çalışıyor
+            // Hata kontrolü yapmadan veritabanına kaydetmeye çalışmak, hatalı veya eksik verilerin SQL'e gitmesine neden olabilir. Bu yüzden önce Check() metodu ile tüm verilerin doğruluğunu kontrol ediyoruz. Eğer Check() true dönerse, yani tüm veriler geçerliyse VeritabaninaKaydet() metodunu çağırarak işlemi tamamlıyoruz.
             if (Check())
             {
                 VeritabaninaKaydet();

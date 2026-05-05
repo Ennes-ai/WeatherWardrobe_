@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq; // FİLTRELEME İÇİN BU ŞART
+using System.Linq; 
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -104,7 +104,7 @@ namespace WeatherWardrobe
             #endregion
             gunaHosgeldin.Text = "Hoşgeldiniz : " + GlobalBrain.AktifKullaniciAdSoyad;
 
-            // Veritabanı motorunu çalıştır
+            // Veritabanını çalıştır
             DbManager db = new DbManager();
             guna2DataGridView1.DataSource = db.KullaniciKiyafetleriniGetir(GlobalBrain.AktifKullaniciID);
 
@@ -114,31 +114,47 @@ namespace WeatherWardrobe
 
         }
 
-        private bool RenkUyumlumu(string ustRenk, string altRenk)
+        private bool RenkUyumlumu(string renk1, string renk2)
         {
-            if (string.IsNullOrEmpty(ustRenk) || string.IsNullOrEmpty(altRenk) || ustRenk == "Belirtilmedi" || altRenk == "Belirtilmedi")
+            if (string.IsNullOrEmpty(renk1) || string.IsNullOrEmpty(renk2) || renk1 == "Belirtilmedi" || renk2 == "Belirtilmedi")
                 return true;
 
-            ustRenk = ustRenk.ToLower().Trim();
-            altRenk = altRenk.ToLower().Trim();
+            renk1 = renk1.ToLower().Trim();
+            renk2 = renk2.ToLower().Trim();
 
-            // Joker Renkler (Her şeyle uyar)
-            string[] jokerRenkler = { "siyah", "beyaz", "gri", "lacivert", "bej", "krem", "kot", "denim", "vizon" };
-            if (jokerRenkler.Contains(ustRenk) || jokerRenkler.Contains(altRenk))
+            if (renk1 == renk2) return false; // Şirinler gibi aynı renk gezmek yok (Siyah hariç)
+
+            string[] jokerler = { "siyah", "beyaz", "gri", "kot", "denim", "bej" };
+
+            // Eğer ikisi de joker rengiyse veya biri jokerse %90 uyar
+            if (jokerler.Contains(renk1) || jokerler.Contains(renk2))
             {
-                if ((ustRenk == "kahverengi" && altRenk == "siyah") || (ustRenk == "lacivert" && altRenk == "siyah")) return false;
+                // Göz kanatan istisnalar: Siyah üstüne lacivert veya kahverengi giyilmez
+                if ((renk1 == "siyah" && (renk2 == "lacivert" || renk2 == "kahverengi")) ||
+                    (renk2 == "siyah" && (renk1 == "lacivert" || renk1 == "kahverengi")))
+                    return false;
+
                 return true;
             }
 
-            // Şirinler Sendromu İptali (Aynı renk giyilmez)
-            if (ustRenk == altRenk) return false;
+            // Facia zıtlıklar iptal
+            if ((renk1 == "kırmızı" && (renk2 == "yeşil" || renk2 == "pembe")) || (renk2 == "kırmızı" && (renk1 == "yeşil" || renk1 == "pembe"))) return false;
+            if ((renk1 == "sarı" && renk2 == "mor") || (renk2 == "sarı" && renk1 == "mor")) return false;
+            if ((renk1 == "turuncu" && renk2 == "mavi") || (renk2 == "turuncu" && renk1 == "mavi")) return false;
 
-            // Facia Kombinleri Engelle (Zıt Renkler)
-            if ((ustRenk == "kırmızı" && altRenk == "yeşil") || (ustRenk == "yeşil" && altRenk == "kırmızı")) return false;
-            if ((ustRenk == "sarı" && altRenk == "mor") || (ustRenk == "mor" && altRenk == "sarı")) return false;
-            if ((ustRenk == "turuncu" && altRenk == "mavi") || (ustRenk == "mavi" && altRenk == "turuncu")) return false;
+            return false; // Çok riskli iki renk denk geldiyse (örn: Bordo ve Turkuaz) direkt reddet, joker arasın
+        }
+        private string RenkTipi(string renk)
+        {
+            if (string.IsNullOrEmpty(renk)) return "Bilinmiyor";
+            renk = renk.ToLower().Trim();
 
-            return true;
+            string[] koyular = { "siyah", "lacivert", "kahverengi", "bordo", "antrasit", "gri", "koyu" };
+            string[] aciklar = { "beyaz", "bej", "krem", "ekru", "pembe", "lila", "açık", "kemik", "sarı" };
+
+            if (koyular.Any(k => renk.Contains(k))) return "Koyu";
+            if (aciklar.Any(a => renk.Contains(a))) return "Açık";
+            return "Canlı"; // Kırmızı, Yeşil, Mavi vb.
         }
         #region Gereksiz
         private void button1_Click(object sender, EventArgs e)
@@ -183,16 +199,15 @@ namespace WeatherWardrobe
 
         private void btnNeGiysem_Click(object sender, EventArgs e)
         {
-
-            int sicakliks = (int)sicaklik;
+            int anlikSicaklik = (int)this.sicaklik;
             bool yagmurVarMi = checkYagmur.Checked;
 
             DbManager db = new DbManager();
-            DataTable tumDolap = db.KullaniciKiyafetleriniGetir(data.GlobalBrain.AktifKullaniciID);
+            DataTable tumDolap = db.KullaniciKiyafetleriniGetir(GlobalBrain.AktifKullaniciID);
 
-            // 1. ÖN FİLTRE: Havaya uymayanları direkt ele (Böylece yazın kışlık şapka gelmez)
+            // 1. ÖN FİLTRE: Havaya Uyanlar Havuzu
             var havayaUyanlar = tumDolap.AsEnumerable()
-                .Where(k => sicaklik >= Convert.ToInt32(k["Min °C"]) && sicaklik <= Convert.ToInt32(k["Max °C"]))
+                .Where(k => anlikSicaklik >= Convert.ToInt32(k["Min °C"]) && anlikSicaklik <= Convert.ToInt32(k["Max °C"]))
                 .ToList();
 
             if (!havayaUyanlar.Any())
@@ -204,89 +219,140 @@ namespace WeatherWardrobe
             Random rnd = new Random();
             DataTable secilenKombin = tumDolap.Clone();
 
-            // --- A. ÜST GİYİM ---
-            var ustGiyim = havayaUyanlar.Where(k => k["Kategori"].ToString() == "Üst Giyim").OrderBy(x => rnd.Next()).FirstOrDefault();
-            if (ustGiyim != null) secilenKombin.ImportRow(ustGiyim);
+            // MANYAK YAPAY ZEKA KIYAFET ASİSTANI
 
-            // --- B. ALT GİYİM (Renk Zekası) ---
-            var altGiyimler = havayaUyanlar.Where(k => k["Kategori"].ToString() == "Alt Giyim");
-            if (ustGiyim != null)
+            //1. ALT GİYİM (Sıcaklık Zekası)
+            var altGiyimler = havayaUyanlar.Where(k => k["Kategori"].ToString() == "Alt Giyim").ToList();
+
+            // Eğer hava çok sıcaksa (25+), öncelikli olarak Şort ara!
+            if (anlikSicaklik >= 25)
             {
-                string ustRenk = ustGiyim["Renk"].ToString();
-                var uyumluAltlar = altGiyimler.Where(k => RenkUyumlumu(ustRenk, k["Renk"].ToString())).ToList();
-                if (uyumluAltlar.Any()) altGiyimler = uyumluAltlar;
+                var sortlar = altGiyimler.Where(k => k["Kıyafet Adı"].ToString().ToLower().Contains("şort")).ToList();
+                if (sortlar.Any()) altGiyimler = sortlar;
             }
+
             var altGiyim = altGiyimler.OrderBy(x => rnd.Next()).FirstOrDefault();
+            string altRenk = altGiyim != null ? altGiyim["Renk"].ToString() : "Belirtilmedi";
+            string altTon = RenkTipi(altRenk); // Koyu mu Açık mı?
             if (altGiyim != null) secilenKombin.ImportRow(altGiyim);
 
-            // --- C. DIŞ GİYİM (Katman & Yağmur Zekası) ---
-            if (sicaklik < 20 || yagmurVarMi)
+
+            //2. ÜST GİYİM (Kontrast Zekası) 
+            var ustGiyimler = havayaUyanlar.Where(k => k["Kategori"].ToString() == "Üst Giyim");
+            if (altGiyim != null)
             {
-                var disGiyimler = havayaUyanlar.Where(k => k["Kategori"].ToString() == "Dış Giyim");
-                if (yagmurVarMi)
+                // Önce renkler çarpışmasın diye ana filtreden geçir
+                var uyumluUstler = ustGiyimler.Where(k => RenkUyumlumu(k["Renk"].ToString(), altRenk)).ToList();
+
+                // Pantolon Koyu ise Üstü Açık renk bulmaya çalış (Denge yarat)
+                if (uyumluUstler.Any())
                 {
-                    disGiyimler = disGiyimler.Where(k => Convert.ToBoolean(k["Kapüşonlu"]) == true || Convert.ToBoolean(k["Su Geçirmez"]) == true);
+                    var kontrastUstler = uyumluUstler.Where(k => RenkTipi(k["Renk"].ToString()) != altTon).ToList();
+
+                    // Eğer zıt tonda bir şey bulabildiyse onu kullan, bulamadıysa normallerden devam et
+                    if (kontrastUstler.Any() && rnd.Next(0, 100) > 30) // %70 ihtimalle kontrast giydirir
+                    {
+                        ustGiyimler = kontrastUstler;
+                    }
+                    else
+                    {
+                        ustGiyimler = uyumluUstler;
+                    }
                 }
+            }
+            var ustGiyim = ustGiyimler.OrderBy(x => rnd.Next()).FirstOrDefault();
+            string ustRenk = ustGiyim != null ? ustGiyim["Renk"].ToString() : "Belirtilmedi";
+            if (ustGiyim != null) secilenKombin.ImportRow(ustGiyim);
+
+
+            //3. DIŞ GİYİM (Yagmur zekası)
+            if (anlikSicaklik < 20 || yagmurVarMi)
+            {
+                var disGiyimler = havayaUyanlar.Where(k => k["Kategori"].ToString() == "Dış Giyim").ToList();
+
+                if (yagmurVarMi)
+                    disGiyimler = disGiyimler.Where(k => Convert.ToBoolean(k["Kapüşonlu"]) == true || Convert.ToBoolean(k["Su Geçirmez"]) == true).ToList();
+
+                // Hava buz gibiyse (5 dereceden az) , "Mont, Kaban, Palto, Parka" ara!
+                if (anlikSicaklik <= 5)
+                {
+                    var agirKislilar = disGiyimler.Where(k =>
+                        k["Kıyafet Adı"].ToString().ToLower().Contains("mont") ||
+                        k["Kıyafet Adı"].ToString().ToLower().Contains("kaban") ||
+                        k["Kıyafet Adı"].ToString().ToLower().Contains("palto") ||
+                        k["Kıyafet Adı"].ToString().ToLower().Contains("parka")).ToList();
+
+                    if (agirKislilar.Any()) disGiyimler = agirKislilar;
+                }
+
+                // Ceket rengi, tişörtle çarpışmasın
+                if (ustGiyim != null)
+                {
+                    var uyumluCeketler = disGiyimler.Where(k => RenkUyumlumu(k["Renk"].ToString(), ustRenk)).ToList();
+                    if (uyumluCeketler.Any()) disGiyimler = uyumluCeketler;
+                }
+
                 var disGiyim = disGiyimler.OrderBy(x => rnd.Next()).FirstOrDefault();
                 if (disGiyim != null) secilenKombin.ImportRow(disGiyim);
             }
 
-            // --- D. AYAKKABI ---
-            var ayakkabi = havayaUyanlar.Where(k => k["Kategori"].ToString() == "Ayakkabı").OrderBy(x => rnd.Next()).FirstOrDefault();
+
+            //4. AYAKKABI VE KEMER (Takım Zekası)
+            var ayakkabilar = havayaUyanlar.Where(k => k["Kategori"].ToString() == "Ayakkabı");
+            if (altGiyim != null)
+            {
+                var uyumluAyakkabilar = ayakkabilar.Where(k => RenkUyumlumu(k["Renk"].ToString(), altRenk)).ToList();
+                if (uyumluAyakkabilar.Any()) ayakkabilar = uyumluAyakkabilar;
+            }
+            var ayakkabi = ayakkabilar.OrderBy(x => rnd.Next()).FirstOrDefault();
+            string ayakkabiRengi = ayakkabi != null ? ayakkabi["Renk"].ToString() : "Belirtilmedi";
             if (ayakkabi != null) secilenKombin.ImportRow(ayakkabi);
 
-            // ==========================================
-            // EFSANE DETAYLAR BÖLÜMÜ (YENİ KATEGORİLER)
-            // ==========================================
-
-            // --- E. KEMER (Ayakkabı ile Renk Eşleştirme Kuralı) ---
             var kemerler = havayaUyanlar.Where(k => k["Kategori"].ToString() == "Kemer");
             if (ayakkabi != null && kemerler.Any())
             {
-                string ayakkabiRengi = ayakkabi["Renk"].ToString();
-                // Önce ayakkabı ile aynı renk kemer var mı diye bak (Gerçek Moda Kuralı)
-                var ayniRenkKemer = kemerler.Where(k => k["Renk"].ToString() == ayakkabiRengi).ToList();
-
-                if (ayniRenkKemer.Any()) kemerler = ayniRenkKemer; // Varsa sadece onları kullan
+                var ayniRenkKemer = kemerler.Where(k => k["Renk"].ToString().ToLower() == ayakkabiRengi.ToLower()).ToList();
+                if (ayniRenkKemer.Any()) kemerler = ayniRenkKemer;
             }
             var kemer = kemerler.OrderBy(x => rnd.Next()).FirstOrDefault();
             if (kemer != null) secilenKombin.ImportRow(kemer);
 
-            // --- F. ÇANTA ---
+
+            //5. AKSESUARLAR VE ŞAPKA (Kutup Zekası)
             var canta = havayaUyanlar.Where(k => k["Kategori"].ToString() == "Çanta").OrderBy(x => rnd.Next()).FirstOrDefault();
             if (canta != null) secilenKombin.ImportRow(canta);
 
-            // --- G. GÖZLÜK (Hava Güzelse Takılır) ---
-            if (sicaklik > 15 && !yagmurVarMi)
+            if (anlikSicaklik >= 18 && !yagmurVarMi)
             {
                 var gozluk = havayaUyanlar.Where(k => k["Kategori"].ToString() == "Gözlük").OrderBy(x => rnd.Next()).FirstOrDefault();
                 if (gozluk != null) secilenKombin.ImportRow(gozluk);
             }
 
-            // --- H. ŞAPKA (Sıcaklık filtresinden zaten yazlık/kışlık diye elenmişti, direkt seç) ---
             var sapka = havayaUyanlar.Where(k => k["Kategori"].ToString() == "Şapka").OrderBy(x => rnd.Next()).FirstOrDefault();
             if (sapka != null) secilenKombin.ImportRow(sapka);
 
-            // --- I. DİĞER AKSESUARLAR (Saat, Kolye, Bileklik vs.) ---
-            var aksesuar = havayaUyanlar.Where(k => k["Kategori"].ToString() == "Aksesuar").OrderBy(x => rnd.Next()).FirstOrDefault();
-            if (aksesuar != null) secilenKombin.ImportRow(aksesuar);
+            var aksesuarlar = havayaUyanlar.Where(k => k["Kategori"].ToString() == "Aksesuar").ToList();
 
+            // Eğer hava buz gibiyse eldiven veya atkı bulmaya zorla
+            if (anlikSicaklik <= 5)
+            {
+                var kisAksesuarlari = aksesuarlar.Where(k =>
+                    k["Kıyafet Adı"].ToString().ToLower().Contains("atkı") ||
+                    k["Kıyafet Adı"].ToString().ToLower().Contains("eldiven")).ToList();
 
-            // Kombini Ekrana Bas!
+                if (kisAksesuarlari.Any()) aksesuarlar = kisAksesuarlari;
+            }
+
+            var secilenAksesuar = aksesuarlar.OrderBy(x => rnd.Next()).FirstOrDefault();
+            if (secilenAksesuar != null) secilenKombin.ImportRow(secilenAksesuar);
+
+            //Ekrana ver
             dgvKombin.DataSource = null;
             dgvKombin.DataSource = secilenKombin;
-
-            // Tablo Makyajı
-            dgvKombin.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvKombin.RowHeadersVisible = false;
-            dgvKombin.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvKombin.AllowUserToAddRows = false;
-            dgvKombin.BackgroundColor = System.Drawing.Color.White;
+            dgvKombin.ClearSelection();
 
             if (secilenKombin.Rows.Count < 2)
-            {
-                MessageBox.Show("Tam bir kombin dizemedim, bazı temel parçalar eksik!", "Bilgi", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
+                MessageBox.Show("Tam bir kombin dizemedim, dolapta yeterli uygun kıyafet yok!", "Bilgi", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         private async void btnHavaDurumu_Click(object sender, EventArgs e)
         {
@@ -329,11 +395,10 @@ namespace WeatherWardrobe
 
                         using (JsonDocument havaDoc = JsonDocument.Parse(havaCevap))
                         {
-                            double sicaklik = havaDoc.RootElement.GetProperty("current_weather").GetProperty("temperature").GetDouble();
-
+                            this.sicaklik = havaDoc.RootElement.GetProperty("current_weather").GetProperty("temperature").GetDouble();
                             int havaKodu = havaDoc.RootElement.GetProperty("current_weather").GetProperty("weathercode").GetInt32();
 
-                            // 3. WMO (Dünya Meteoroloji Örgütü) Kodlarına göre yağmur kontrolü
+                            // (Dünya Meteoroloji Örgütü) Kodlarına göre yağmur kontrolü
                             // 51-67 arası: Çiseleme, Yağmur ve Dondurucu Yağmur
                             // 80-99 arası: Sağanak Yağmur, Kar ve Fırtına
                             bool yagmurVarMi = false;

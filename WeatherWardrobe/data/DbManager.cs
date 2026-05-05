@@ -8,9 +8,12 @@ namespace WeatherWardrobe.data
     public class DbManager
     {
         // 1. DÜZELTME BURADA: Adrese \SQLEXPRESS eklendi ve yolu bozmasın diye başına @ konuldu.
-        private string connectionString = @"Server=.;Database=WeatherWardrobe;Trusted_Connection=True;TrustServerCertificate=True;";
-
         
+      //  private string connectionString = @"Server=.;Database=WeatherWardrobe;Trusted_Connection=True;TrustServerCertificate=True;";
+
+        private string connectionString = @"Server=.\SQLEXPRESS;Database=WeatherWardrobe;Trusted_Connection=True;TrustServerCertificate=True;";
+
+
         public bool BaglantiyiTestEt()
         {
             using (SqlConnection baglanti = new SqlConnection(connectionString))
@@ -48,7 +51,7 @@ namespace WeatherWardrobe.data
             return tablo;
         }
 
-        // 2. YENİ EKLENEN METOT: FormLogin ekranında kullanıcıyı kontrol edecek kod
+        // 2. FormLogin ekranında kullanıcıyı kontrol edecek kod
         public DataTable KullaniciGiris(string kullaniciAdi, string sifre)
         {
             DataTable tablo = new DataTable();
@@ -108,7 +111,7 @@ namespace WeatherWardrobe.data
             return tablo;
         }
 
-        // YENİ KIYAFET EKLEME METODU
+        
         public bool KiyafetEkle(
             int userID,
             int categoryID,
